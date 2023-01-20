@@ -6,10 +6,10 @@ module Airrecord
       attr_accessor :requests
     end
 
-    def initialize(app, requests_per_second: nil, sleeper: nil)
-      super(app)
-      @rps = requests_per_second
-      @sleeper = sleeper || ->(seconds) { sleep(seconds) }
+    def initialize(app = nil, options = {})
+      super(app, options: options)
+      @rps = options.fetch(:requests_per_second, nil)
+      @sleeper = options.fetch(:sleeper, nil) || ->(seconds) { sleep(seconds) }
       @mutex = Mutex.new
       clear
     end
